@@ -2,7 +2,23 @@ from flask import Flask, render_template, request, redirect
 import sqlite3
 import os
 from werkzeug.utils import secure_filename
+import sqlite3
 
+# Créer la base de données si elle n'existe pas
+def init_db():
+    conn = sqlite3.connect("database.db")
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS products (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            price REAL NOT NULL,
+            image TEXT
+        )
+    """)
+    conn.commit()
+    conn.close()
+
+init_db()
 app = Flask(__name__)
 
 UPLOAD_FOLDER = "static/uploads"
